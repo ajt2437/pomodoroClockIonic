@@ -1,7 +1,10 @@
 {
   "name": "Pomodoro Clock",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
   },
   "type": "angular"
 }

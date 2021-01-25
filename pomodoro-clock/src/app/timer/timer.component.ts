@@ -10,9 +10,9 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 })
 export class TimerComponent {
 
-  public sessionInterval = 25; //this.convertMinutesToSeconds(25);
-  public shortBreakInterval = 5; //this.convertMinutesToSeconds(5);
-  public longBreakInterval = 10; //this.convertMinutesToSeconds(10);
+  public sessionInterval = this.convertMinutesToSeconds(25);
+  public shortBreakInterval = this.convertMinutesToSeconds(5);
+  public longBreakInterval = this.convertMinutesToSeconds(10);
 
   public timer: ITimer;
   public timerTitle: string;
