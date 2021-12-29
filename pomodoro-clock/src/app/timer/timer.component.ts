@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ITimer } from './model/ITimer';
 import { Platform } from '@ionic/angular';
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { NativeAudio } from '@capacitor-community/native-audio'
 
 @Component({
   selector: 'app-timer',
@@ -10,7 +10,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 })
 export class TimerComponent {
 
-  public sessionInterval = this.convertMinutesToSeconds(25);
+  public sessionInterval = 5;
   public shortBreakInterval = this.convertMinutesToSeconds(5);
   public longBreakInterval = this.convertMinutesToSeconds(10);
 
@@ -20,23 +20,23 @@ export class TimerComponent {
   public isBreak = false;
   public breakCount = 0;
 
-  // audio
-  filename = 'assets/audio/alarm.mp3';
-
   constructor(
-    private platform: Platform,
-    private nativeAudio: NativeAudio
+    private platform: Platform
   ) {
     this.platform.ready().then(() => {
-      if (this.platform.is('cordova')) {
-        this.nativeAudio.preloadSimple('completeTimer', this.filename).then(
-          (result) => {
-            console.log('nativeAudio preloadSimple successful: ' + result);
-          }, (error) => {
-            console.log('nativeAudio preloadSimple failed: ' + error);
-          }
-        );
-      }
+
+      NativeAudio.preload({
+        assetId: "completeTimer",
+        assetPath: "alarm.mp3",
+        audioChannelNum: 1,
+        isUrl: false
+      }).then(
+        (result) => {
+          console.log('nativeAudio preloadSimple successful: ' + result);
+        }, (error) => {
+          console.log('nativeAudio preloadSimple failed: ' + error);
+        }
+      );
 
       this.timer = {
         title: 'Session',
@@ -106,24 +106,16 @@ export class TimerComponent {
   }
 
   private playTune() {
-    if (this.platform.is('cordova')) {
-      this.nativeAudio.play('completeTimer').then(
-        (result) => {
-          console.log('nativeAudio play successful: ' + result);
-        }, (error) => {
-          console.log('nativeAudio play fail: ' + error);
-        }
-      );
-    } else {
-      let audioAsset = new Audio(this.filename);
-      audioAsset.play().then(
-        () => {
-          console.log('play successful');
-        }, (error) => {
-          console.log('play failed ' + error);
-        }
-      );
-    }
+    NativeAudio.play({
+      assetId: 'completeTimer',
+      time: 0.0
+    }).then(
+      (result) => {
+        console.log('nativeAudio play successful: ' + result);
+      }, (error) => {
+        console.log('nativeAudio play fail: ' + error);
+      }
+    );
   }
 
   updateUI() {
