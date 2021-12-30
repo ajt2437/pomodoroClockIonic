@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ITimer } from './model/ITimer';
 import { Platform } from '@ionic/angular';
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
 @Component({
   selector: 'app-timer',
@@ -20,24 +20,11 @@ export class TimerComponent {
   public isBreak = false;
   public breakCount = 0;
 
-  // audio
-  filename = 'assets/audio/alarm.mp3';
-
   constructor(
     private platform: Platform,
-    private nativeAudio: NativeAudio
+    private vibration: Vibration
   ) {
     this.platform.ready().then(() => {
-      if (this.platform.is('cordova')) {
-        this.nativeAudio.preloadSimple('completeTimer', this.filename).then(
-          (result) => {
-            console.log('nativeAudio preloadSimple successful: ' + result);
-          }, (error) => {
-            console.log('nativeAudio preloadSimple failed: ' + error);
-          }
-        );
-      }
-
       this.timer = {
         title: 'Session',
         secondsRemaining: this.sessionInterval,
@@ -80,7 +67,7 @@ export class TimerComponent {
   }
 
   private nextTimer() {
-    this.playTune();
+    this.vibration.vibrate([2000,1000,2000]);
 
     if (this.isBreak) {
       this.timer = {
@@ -105,27 +92,6 @@ export class TimerComponent {
     this.timerTick();
   }
 
-  private playTune() {
-    if (this.platform.is('cordova')) {
-      this.nativeAudio.play('completeTimer').then(
-        (result) => {
-          console.log('nativeAudio play successful: ' + result);
-        }, (error) => {
-          console.log('nativeAudio play fail: ' + error);
-        }
-      );
-    } else {
-      let audioAsset = new Audio(this.filename);
-      audioAsset.play().then(
-        () => {
-          console.log('play successful');
-        }, (error) => {
-          console.log('play failed ' + error);
-        }
-      );
-    }
-  }
-
   updateUI() {
     this.timerDisplay = this.getSecondsAsDigitalClock(this.timer.secondsRemaining);
     this.timerTitle = this.timer.title;
@@ -134,5 +100,6 @@ export class TimerComponent {
   playPauseTimer() {
     this.timer.isPaused = !this.timer.isPaused;
     this.timerTick();
+    this.vibration.vibrate(0);
   }
 }

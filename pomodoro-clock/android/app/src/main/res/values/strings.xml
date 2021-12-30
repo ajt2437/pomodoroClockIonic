@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pomodoro Clock</string>
+    <string name="title_activity_main">Pomodoro Clock</string>
+    <string name="package_name">com.abe24torres.pomodoroClock</string>
+    <string name="custom_url_scheme">com.abe24torres.pomodoroClock</string>
+</resources>
