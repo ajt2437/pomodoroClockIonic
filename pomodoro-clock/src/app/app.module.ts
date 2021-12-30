@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +17,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
   providers: [
     StatusBar,
     SplashScreen,
-    NativeAudio,
+    Vibration,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
